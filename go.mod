@@ -1,8 +1,9 @@
-module github.com/ebitengine/debugui
+module github.com/aldernero/debugui
 
-go 1.24.0
+go 1.25.0
 
 require (
+	github.com/ebitengine/debugui v0.2.0
 	github.com/hajimehoshi/bitmapfont/v4 v4.1.0
 	github.com/hajimehoshi/ebiten/v2 v2.9.8
 	github.com/kisielk/errcheck v1.10.0
