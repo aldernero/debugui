@@ -8,7 +8,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/ebitengine/debugui"
+	"github.com/aldernero/debugui"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"

@@ -75,6 +75,17 @@ func (c *Context) slider(value *int, low, high, step int, id widgetID, opt optio
 				v = v / step * step
 			}
 		}
+		if c.hover == id && ebiten.IsKeyPressed(ebiten.KeyControl) {
+			_, wy := ebiten.Wheel()
+			if wy != 0 && step != 0 {
+				if wy < 0 {
+					v += step
+				} else {
+					v -= step
+				}
+				c.wheelConsumed = true
+			}
+		}
 		*value = clamp(v, low, high)
 		v = *value
 		if last != v {
@@ -119,6 +130,17 @@ func (c *Context) sliderF(value *float64, low, high, step float64, digits int, i
 			}
 			if step != 0 {
 				v = math.Round(v/step) * step
+			}
+		}
+		if c.hover == id && ebiten.IsKeyPressed(ebiten.KeyControl) {
+			_, wy := ebiten.Wheel()
+			if wy != 0 && step != 0 {
+				if wy < 0 {
+					v += step
+				} else {
+					v -= step
+				}
+				c.wheelConsumed = true
 			}
 		}
 		*value = clamp(v, low, high)
