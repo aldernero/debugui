@@ -26,6 +26,7 @@ type Context struct {
 	currentID     widgetID
 	keepFocus     bool
 	scrollTarget  *container
+	wheelConsumed bool
 	numberEditBuf string
 	numberEdit    widgetID
 
@@ -120,6 +121,7 @@ func (c *Context) beginUpdate() {
 		cnt.commandList = slices.Delete(cnt.commandList, 0, len(cnt.commandList))
 	}
 	c.scrollTarget = nil
+	c.wheelConsumed = false
 	c.currentID = widgetID{}
 }
 
@@ -139,7 +141,7 @@ func (c *Context) endUpdate() error {
 	}
 
 	// handle scroll input
-	if c.scrollTarget != nil {
+	if c.scrollTarget != nil && !c.wheelConsumed {
 		wx, wy := ebiten.Wheel()
 		c.scrollTarget.layout.ScrollOffset.X += int(wx * -30)
 		c.scrollTarget.layout.ScrollOffset.Y += int(wy * -30)

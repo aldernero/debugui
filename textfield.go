@@ -206,6 +206,22 @@ func (c *Context) numberField(value *int, step int, idPart string, opt option) (
 					e = &eventHandler{}
 				}
 			}
+			if c.hover == id && ebiten.IsKeyPressed(ebiten.KeyControl) {
+				_, wy := ebiten.Wheel()
+				if wy != 0 && step != 0 {
+					if wy < 0 {
+						*value += step
+					} else {
+						*value -= step
+					}
+					buf := fmt.Sprintf("%d", *value)
+					if f := c.currentContainer().textInputTextField(id, false); f != nil {
+						f.SetTextAndSelection(buf, len(buf), len(buf))
+					}
+					c.wheelConsumed = true
+					e = &eventHandler{}
+				}
+			}
 
 			c.GridCell(func(bounds image.Rectangle) {
 				c.SetGridLayout(nil, []int{-1, -1})
@@ -279,6 +295,22 @@ func (c *Context) numberFieldF(value *float64, step float64, digits int, idPart 
 					if f := c.currentContainer().textInputTextField(id, false); f != nil {
 						f.SetTextAndSelection(buf, len(buf), len(buf))
 					}
+					e = &eventHandler{}
+				}
+			}
+			if c.hover == id && ebiten.IsKeyPressed(ebiten.KeyControl) {
+				_, wy := ebiten.Wheel()
+				if wy != 0 && step != 0 {
+					if wy < 0 {
+						*value += step
+					} else {
+						*value -= step
+					}
+					buf := formatNumber(*value, digits)
+					if f := c.currentContainer().textInputTextField(id, false); f != nil {
+						f.SetTextAndSelection(buf, len(buf), len(buf))
+					}
+					c.wheelConsumed = true
 					e = &eventHandler{}
 				}
 			}

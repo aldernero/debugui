@@ -118,6 +118,17 @@ func (c *Context) dropdown(selectedIndex *int, options []string, idPart string) 
 				}
 			}
 		}
+		if c.hover == id && ebiten.IsKeyPressed(ebiten.KeyControl) {
+			_, wy := ebiten.Wheel()
+			if wy != 0 {
+				if wy < 0 {
+					*selectedIndex = min(*selectedIndex+1, len(options)-1)
+				} else {
+					*selectedIndex = max(*selectedIndex-1, 0)
+				}
+				c.wheelConsumed = true
+			}
+		}
 		if last != *selectedIndex {
 			e = &eventHandler{}
 		}
