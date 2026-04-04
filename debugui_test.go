@@ -8,7 +8,7 @@ import (
 	"image"
 	"testing"
 
-	"github.com/ebitengine/debugui"
+	"github.com/aldernero/debugui"
 )
 
 func TestMultipleIDPartFromCallersInForLoop(t *testing.T) {
