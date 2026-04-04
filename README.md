@@ -8,6 +8,8 @@ DebugUI is a UI toolkit for Ebitengine applications, primarily intended for debu
 
 DebugUI is based on [Microui](https://github.com/rxi/microui). The original Microui was developed by [@rxi](https://github.com/rxi/microui). The original Go port was developed by [@zeozeozeo](https://github.com/zeozeozeo) and [@Zyko0](https://github.com/Zyko0).
 
+This repository is a fork of [ebitengine/debugui](https://github.com/ebitengine/debugui). Use module path `github.com/aldernero/debugui` (for example `go get github.com/aldernero/debugui`).
+
 ## Example Go file
 
 ```go
@@ -17,7 +19,7 @@ import (
 	"fmt"
 	"image"
 
-	"github.com/ebitengine/debugui"
+	"github.com/aldernero/debugui"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
