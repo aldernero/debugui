@@ -1,3 +1,5 @@
+This repository is a fork of [ebitengine/debugui](https://github.com/ebitengine/debugui). It adds some extra functionality and styling. It is primarily used for the Control Panel in [Sketchy](https://github.com/aldernero/sketchy), a generative art framework.
+
 # DebugUI for Ebitengine
 
 DebugUI is a UI toolkit for Ebitengine applications, primarily intended for debugging purposes.
@@ -7,8 +9,6 @@ DebugUI is a UI toolkit for Ebitengine applications, primarily intended for debu
 ![Example](./example.png)
 
 DebugUI is based on [Microui](https://github.com/rxi/microui). The original Microui was developed by [@rxi](https://github.com/rxi/microui). The original Go port was developed by [@zeozeozeo](https://github.com/zeozeozeo) and [@Zyko0](https://github.com/Zyko0).
-
-This repository is a fork of [ebitengine/debugui](https://github.com/ebitengine/debugui). Use module path `github.com/aldernero/debugui` (for example `go get github.com/aldernero/debugui`).
 
 ## Example Go file
 
