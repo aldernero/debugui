@@ -49,6 +49,8 @@ const (
 	optionPopup
 	optionClosed
 	optionExpanded
+	// optionSliderNoValue: do not draw the numeric value on the slider track (thumb only).
+	optionSliderNoValue
 )
 
 func (c *Context) pointingOver(bounds image.Rectangle) bool {

@@ -30,6 +30,16 @@ func (c *Context) Slider(value *int, low, high int, step int) EventHandler {
 	})
 }
 
+// SliderNoValue is like [Context.Slider] but does not draw the current value on the track,
+// only the thumb—useful when a separate widget shows the value (e.g. a text field).
+func (c *Context) SliderNoValue(value *int, low, high int, step int) EventHandler {
+	pc := caller()
+	id := c.idStack.push(idPartFromCaller(pc))
+	return c.wrapEventHandlerAndError(func() (EventHandler, error) {
+		return c.slider(value, low, high, step, id, optionAlignCenter|optionSliderNoValue)
+	})
+}
+
 // SliderF cretes a slider widget with the given float64 value, range, step, and number of digits.
 //
 // low and high specify the range of the slider.
@@ -46,6 +56,16 @@ func (c *Context) SliderF(value *float64, low, high float64, step float64, digit
 	id := c.idStack.push(idPartFromCaller(pc))
 	return c.wrapEventHandlerAndError(func() (EventHandler, error) {
 		return c.sliderF(value, low, high, step, digits, id, optionAlignCenter)
+	})
+}
+
+// SliderFNoValue is like [Context.SliderF] but does not draw the current value on the track,
+// only the thumb—useful when a separate widget shows the value (e.g. a text field).
+func (c *Context) SliderFNoValue(value *float64, low, high float64, step float64, digits int) EventHandler {
+	pc := caller()
+	id := c.idStack.push(idPartFromCaller(pc))
+	return c.wrapEventHandlerAndError(func() (EventHandler, error) {
+		return c.sliderF(value, low, high, step, digits, id, optionAlignCenter|optionSliderNoValue)
 	})
 }
 
@@ -101,8 +121,10 @@ func (c *Context) slider(value *int, low, high, step int, id widgetID, opt optio
 		}
 		thumb := image.Rect(bounds.Min.X+x, bounds.Min.Y, bounds.Min.X+x+w, bounds.Max.Y)
 		c.drawWidgetFrame(id, thumb, colorButton, opt)
-		text := fmt.Sprintf("%d", v)
-		c.drawWidgetText(text, bounds, colorText, opt)
+		if (opt & optionSliderNoValue) == 0 {
+			text := fmt.Sprintf("%d", v)
+			c.drawWidgetText(text, bounds, colorText, opt)
+		}
 	})
 }
 
@@ -158,8 +180,10 @@ func (c *Context) sliderF(value *float64, low, high, step float64, digits int, i
 		}
 		thumb := image.Rect(bounds.Min.X+x, bounds.Min.Y, bounds.Min.X+x+w, bounds.Max.Y)
 		c.drawWidgetFrame(id, thumb, colorButton, opt)
-		text := formatNumber(v, digits)
-		c.drawWidgetText(text, bounds, colorText, opt)
+		if (opt & optionSliderNoValue) == 0 {
+			text := formatNumber(v, digits)
+			c.drawWidgetText(text, bounds, colorText, opt)
+		}
 	})
 }
 

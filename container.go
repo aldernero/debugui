@@ -369,6 +369,15 @@ func (c *Context) bringToFront(cnt *container) {
 	c.rootContainers = append(c.rootContainers, cnt)
 }
 
+// BringRootContainerToFront moves the root window currently being built to the top of the z-order.
+// Call at the start of a Window callback so dialogs and modals stay above other windows after the
+// user has clicked the control panel (which otherwise raises it in front).
+func (c *Context) BringRootContainerToFront() {
+	if cnt := c.currentRootContainer(); cnt != nil {
+		c.bringToFront(cnt)
+	}
+}
+
 func (c *Context) hoveringRootContainer() *container {
 	p := c.pointingPosition()
 	for i := len(c.rootContainers) - 1; i >= 0; i-- {

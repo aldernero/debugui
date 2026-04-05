@@ -40,6 +40,14 @@ func textWidth(str string) int {
 	return int(text.Advance(str, fontFace))
 }
 
+// textAdvancePrefix returns the horizontal advance in logical pixels of the UTF-8 prefix s.
+func textAdvancePrefix(s string) int {
+	if s == "" {
+		return 0
+	}
+	return int(text.Advance(s, fontFace))
+}
+
 func lineHeight() int {
 	return int(fontFace.Metrics().HAscent + fontFace.Metrics().HDescent + fontFace.Metrics().HLineGap)
 }
@@ -160,6 +168,14 @@ func (c *Context) drawBox(rect image.Rectangle, color color.Color) {
 	c.drawRect(image.Rect(rect.Min.X+1, rect.Max.Y-1, rect.Max.X-1, rect.Max.Y), color)
 	c.drawRect(image.Rect(rect.Min.X, rect.Min.Y, rect.Min.X+1, rect.Max.Y), color)
 	c.drawRect(image.Rect(rect.Max.X-1, rect.Min.Y, rect.Max.X, rect.Max.Y), color)
+}
+
+// DrawSolidRect fills bounds with fill and draws the theme border when enabled.
+func (c *Context) DrawSolidRect(bounds image.Rectangle, fill color.Color) {
+	c.drawRect(bounds, fill)
+	if c.style().colors[colorBorder].A != 0 {
+		c.drawBox(bounds.Inset(-1), c.style().colors[colorBorder])
+	}
 }
 
 func (c *Context) drawText(str string, pos image.Point, color color.Color) {
