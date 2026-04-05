@@ -76,6 +76,6 @@ func (c *Context) spinButton(up bool, opt option, upID, downID widgetID) (EventH
 		if up {
 			icon = iconUp
 		}
-		c.drawIcon(icon, bounds, c.style().colors[colorText])
+		c.drawIcon(icon, bounds, c.style().widgetColor(colorText))
 	})
 }

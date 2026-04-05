@@ -24,6 +24,17 @@ func (g *Game) writeLog(text string) {
 
 func (g *Game) testWindow(ctx *debugui.Context) {
 	ctx.Window("Demo Window", image.Rect(40, 40, 340, 500), func(layout debugui.ContainerLayout) {
+		ctx.Header("Theme", false, func() {
+			ctx.SetGridLayout([]int{-1, -1}, nil)
+			ctx.Text("Preset:")
+			ctx.Dropdown(&g.themeIndex, g.themeLabels).On(func() {
+				s, err := debugui.BuiltInTheme(g.themeKeys[g.themeIndex])
+				if err != nil {
+					return
+				}
+				g.debugUI.SetStyle(&s)
+			})
+		})
 		ctx.Header("Window Info", false, func() {
 			ctx.SetGridLayout([]int{-1, -1}, nil)
 			ctx.Text("Position:")

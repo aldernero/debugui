@@ -88,8 +88,8 @@ func (c *Context) slider(value *int, low, high, step int, id widgetID, opt optio
 	return c.widget(id, opt, nil, func(bounds image.Rectangle, wasFocused bool) EventHandler {
 		var e EventHandler
 		if c.focus == id && c.pointing.pressed() {
-			if w := bounds.Dx() - defaultStyle.thumbSize; w > 0 {
-				v = low + (c.pointingPosition().X-bounds.Min.X-defaultStyle.thumbSize/2)*(high-low+step)/w
+			if w := bounds.Dx() - c.style().ThumbSize; w > 0 {
+				v = low + (c.pointingPosition().X-bounds.Min.X-c.style().ThumbSize/2)*(high-low+step)/w
 			}
 			if step != 0 {
 				v = v / step * step
@@ -114,13 +114,13 @@ func (c *Context) slider(value *int, low, high, step int, id widgetID, opt optio
 		return e
 	}, func(bounds image.Rectangle) {
 		c.drawWidgetFrame(id, bounds, colorBase, opt)
-		w := c.style().thumbSize
+		w := c.style().ThumbSize
 		var x int
 		if low < high {
 			x = int((v - low) * (bounds.Dx() - w) / (high - low))
 		}
 		thumb := image.Rect(bounds.Min.X+x, bounds.Min.Y, bounds.Min.X+x+w, bounds.Max.Y)
-		c.drawWidgetFrame(id, thumb, colorButton, opt)
+		c.drawWidgetFrame(id, thumb, colorSliderThumb, opt)
 		if (opt & optionSliderNoValue) == 0 {
 			text := fmt.Sprintf("%d", v)
 			c.drawWidgetText(text, bounds, colorText, opt)
@@ -147,8 +147,8 @@ func (c *Context) sliderF(value *float64, low, high, step float64, digits int, i
 	return c.widget(id, opt, nil, func(bounds image.Rectangle, wasFocused bool) EventHandler {
 		var e EventHandler
 		if c.focus == id && c.pointing.pressed() {
-			if w := float64(bounds.Dx() - defaultStyle.thumbSize); w > 0 {
-				v = low + float64(c.pointingPosition().X-bounds.Min.X-defaultStyle.thumbSize/2)*(high-low+step)/w
+			if w := float64(bounds.Dx() - c.style().ThumbSize); w > 0 {
+				v = low + float64(c.pointingPosition().X-bounds.Min.X-c.style().ThumbSize/2)*(high-low+step)/w
 			}
 			if step != 0 {
 				v = math.Round(v/step) * step
@@ -173,13 +173,13 @@ func (c *Context) sliderF(value *float64, low, high, step float64, digits int, i
 		return e
 	}, func(bounds image.Rectangle) {
 		c.drawWidgetFrame(id, bounds, colorBase, opt)
-		w := c.style().thumbSize
+		w := c.style().ThumbSize
 		var x int
 		if low < high {
 			x = int((v - low) * float64(bounds.Dx()-w) / (high - low))
 		}
 		thumb := image.Rect(bounds.Min.X+x, bounds.Min.Y, bounds.Min.X+x+w, bounds.Max.Y)
-		c.drawWidgetFrame(id, thumb, colorButton, opt)
+		c.drawWidgetFrame(id, thumb, colorSliderThumb, opt)
 		if (opt & optionSliderNoValue) == 0 {
 			text := formatNumber(v, digits)
 			c.drawWidgetText(text, bounds, colorText, opt)

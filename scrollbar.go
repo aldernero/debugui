@@ -12,7 +12,7 @@ func (c *Context) scrollbarVertical(cnt *container, body image.Rectangle, cs ima
 		// get sizing / positioning
 		base := body
 		base.Min.X = body.Max.X
-		base.Max.X = base.Min.X + c.style().scrollbarSize
+		base.Max.X = base.Min.X + c.style().ScrollbarSize
 
 		// handle input
 		id := c.idStack.push(idPartFromString("scrollbar-y"))
@@ -32,7 +32,7 @@ func (c *Context) scrollbarVertical(cnt *container, body image.Rectangle, cs ima
 		}, func(bounds image.Rectangle) {
 			c.drawFrame(bounds, colorScrollBase)
 			thumb := bounds
-			thumb.Max.Y = thumb.Min.Y + max(c.style().thumbSize, bounds.Dy()*body.Dy()/cs.Y)
+			thumb.Max.Y = thumb.Min.Y + max(c.style().ThumbSize, bounds.Dy()*body.Dy()/cs.Y)
 			thumb = thumb.Add(image.Pt(0, cnt.layout.ScrollOffset.Y*(bounds.Dy()-thumb.Dy())/maxscroll))
 			c.drawFrame(thumb, colorScrollThumb)
 		})
@@ -48,7 +48,7 @@ func (c *Context) scrollbarHorizontal(cnt *container, body image.Rectangle, cs i
 		// get sizing / positioning
 		base := body
 		base.Min.Y = body.Max.Y
-		base.Max.Y = base.Min.Y + c.style().scrollbarSize
+		base.Max.Y = base.Min.Y + c.style().ScrollbarSize
 
 		// handle input
 		id := c.idStack.push(idPartFromString("scrollbar-x"))
@@ -68,7 +68,7 @@ func (c *Context) scrollbarHorizontal(cnt *container, body image.Rectangle, cs i
 		}, func(bounds image.Rectangle) {
 			c.drawFrame(bounds, colorScrollBase)
 			thumb := bounds
-			thumb.Max.X = thumb.Min.X + max(c.style().thumbSize, bounds.Dx()*body.Dx()/cs.X)
+			thumb.Max.X = thumb.Min.X + max(c.style().ThumbSize, bounds.Dx()*body.Dx()/cs.X)
 			thumb = thumb.Add(image.Pt(cnt.layout.ScrollOffset.X*(bounds.Dx()-thumb.Dx())/maxscroll, 0))
 			c.drawFrame(thumb, colorScrollThumb)
 		})
@@ -87,10 +87,10 @@ func (c *Context) scrollbar(cnt *container, body image.Rectangle, cs image.Point
 }
 
 func (c *Context) scrollbars(cnt *container, body image.Rectangle) image.Rectangle {
-	sz := c.style().scrollbarSize
+	sz := c.style().ScrollbarSize
 	cs := cnt.layout.ContentSize
-	cs.X += c.style().padding * 2
-	cs.Y += c.style().padding * 2
+	cs.X += c.style().Padding * 2
+	cs.Y += c.style().Padding * 2
 	c.pushClipRect(body)
 	// resize body to make room for scrollbars
 	if cs.Y > cnt.layout.BodyBounds.Dy() {

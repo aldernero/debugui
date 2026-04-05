@@ -3,13 +3,20 @@
 
 package debugui
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"io"
+	"os"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 // DebugUI is a debug UI.
 //
 // The zero value for DebugUI is ready to use.
 type DebugUI struct {
-	ctx Context
+	ctx           Context
+	styleStorage  Style
+	styleActive   bool
 }
 
 // InputCapturingState is a bit mask that indicates the input capturing state of the debug UI.
@@ -43,4 +50,53 @@ func (d *DebugUI) Update(f func(ctx *Context) error) (InputCapturingState, error
 func (d *DebugUI) Draw(screen *ebiten.Image) {
 	d.ctx.draw(screen)
 	d.ctx.screenWidth, d.ctx.screenHeight = screen.Bounds().Dx(), screen.Bounds().Dy()
+}
+
+// SetStyle replaces the UI style. Pass nil to restore [DefaultStyle].
+// The style is copied; later changes to the argument are ignored.
+func (d *DebugUI) SetStyle(s *Style) {
+	if s == nil {
+		d.styleActive = false
+		d.ctx.stylePtr = nil
+		return
+	}
+	d.styleStorage = *s
+	d.styleActive = true
+	d.ctx.stylePtr = &d.styleStorage
+}
+
+// Style returns a copy of the active style, or [DefaultStyle] if none was set.
+func (d *DebugUI) Style() Style {
+	if !d.styleActive {
+		return DefaultStyle()
+	}
+	return d.styleStorage
+}
+
+// LoadStyleFile reads a JSON theme from path and applies it. See [LoadStyleReader] for the format.
+func (d *DebugUI) LoadStyleFile(path string) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	s, err := ParseStyleJSON(b)
+	if err != nil {
+		return err
+	}
+	d.SetStyle(&s)
+	return nil
+}
+
+// LoadStyleReader reads a JSON theme from r and applies it. See [ParseStyleJSON].
+func (d *DebugUI) LoadStyleReader(r io.Reader) error {
+	b, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+	s, err := ParseStyleJSON(b)
+	if err != nil {
+		return err
+	}
+	d.SetStyle(&s)
+	return nil
 }

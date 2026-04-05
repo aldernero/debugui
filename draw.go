@@ -173,8 +173,8 @@ func (c *Context) drawBox(rect image.Rectangle, color color.Color) {
 // DrawSolidRect fills bounds with fill and draws the theme border when enabled.
 func (c *Context) DrawSolidRect(bounds image.Rectangle, fill color.Color) {
 	c.drawRect(bounds, fill)
-	if c.style().colors[colorBorder].A != 0 {
-		c.drawBox(bounds.Inset(-1), c.style().colors[colorBorder])
+	if c.style().widgetColor(colorBorder).A != 0 {
+		c.drawBox(bounds.Inset(-1), c.style().widgetColor(colorBorder))
 	}
 }
 
@@ -232,12 +232,12 @@ func (c *Context) DrawOnlyWidget(f func(screen *ebiten.Image)) {
 }
 
 func (c *Context) drawFrame(rect image.Rectangle, colorid int) {
-	c.drawRect(rect, c.style().colors[colorid])
+	c.drawRect(rect, c.style().widgetColor(colorid))
 	if colorid == colorScrollBase || colorid == colorTitleBG {
 		return
 	}
-	if c.style().colors[colorBorder].A != 0 {
-		c.drawBox(rect.Inset(-1), c.style().colors[colorBorder])
+	if c.style().widgetColor(colorBorder).A != 0 {
+		c.drawBox(rect.Inset(-1), c.style().widgetColor(colorBorder))
 	}
 }
 
@@ -261,11 +261,11 @@ func (c *Context) drawWidgetText(str string, rect image.Rectangle, colorid int, 
 	if (opt & optionAlignCenter) != 0 {
 		pos.X = rect.Min.X + (rect.Dx()-tw)/2
 	} else if (opt & optionAlignRight) != 0 {
-		pos.X = rect.Min.X + rect.Dx() - tw - c.style().padding
+		pos.X = rect.Min.X + rect.Dx() - tw - c.style().Padding
 	} else {
-		pos.X = rect.Min.X + c.style().padding
+		pos.X = rect.Min.X + c.style().Padding
 	}
-	c.drawText(str, pos, c.style().colors[colorid])
+	c.drawText(str, pos, c.style().widgetColor(colorid))
 	c.popClipRect()
 }
 
@@ -315,6 +315,9 @@ func (c *Context) Scale() int {
 	return c.scaleMinus1 + 1
 }
 
-func (c *Context) style() *style {
-	return &defaultStyle
+func (c *Context) style() *Style {
+	if c.stylePtr != nil {
+		return c.stylePtr
+	}
+	return &builtinStyle
 }

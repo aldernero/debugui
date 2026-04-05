@@ -72,7 +72,7 @@ func (c *Context) lines(text string, width int) iter.Seq[string] {
 // Text creates a text label.
 func (c *Context) Text(text string) {
 	c.GridCell(func(bounds image.Rectangle) {
-		for line := range c.lines(text, bounds.Dx()-c.style().padding) {
+		for line := range c.lines(text, bounds.Dx()-c.style().Padding) {
 			_, _ = c.widget(widgetID{}, 0, nil, nil, func(bounds image.Rectangle) {
 				c.drawWidgetText(line, bounds, colorText, 0)
 			})

@@ -70,6 +70,9 @@ type Context struct {
 	segStackIdx int
 
 	err error
+
+	// stylePtr, if non-nil, overrides [builtinStyle] for this context ([DebugUI.SetStyle]).
+	stylePtr *Style
 }
 
 func (c *Context) pushSegmenter() *segmenter.Segmenter {

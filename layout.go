@@ -19,15 +19,15 @@ type layout struct {
 	indent    int
 }
 
-func (l *layout) widthInPixels(style *style) int {
-	return l.sizeInPixels(l.widths, l.itemIndex%len(l.widths), 8, style.defaultWidth+style.padding*2, l.body.Dx()-l.indent, style)
+func (l *layout) widthInPixels(st *Style) int {
+	return l.sizeInPixels(l.widths, l.itemIndex%len(l.widths), 8, st.DefaultWidth+st.Padding*2, l.body.Dx()-l.indent, st)
 }
 
-func (l *layout) heightInPixels(style *style) int {
-	return l.sizeInPixels(l.heights, l.itemIndex/len(l.widths), 6, style.defaultHeight, l.body.Dy(), style)
+func (l *layout) heightInPixels(st *Style) int {
+	return l.sizeInPixels(l.heights, l.itemIndex/len(l.widths), 6, st.DefaultHeight, l.body.Dy(), st)
 }
 
-func (l *layout) sizeInPixels(sizes []int, index int, minSize, defaultSize int, entireSize int, style *style) int {
+func (l *layout) sizeInPixels(sizes []int, index int, minSize, defaultSize int, entireSize int, st *Style) int {
 	s := sizes[index]
 	if s > 0 {
 		return s
@@ -36,7 +36,7 @@ func (l *layout) sizeInPixels(sizes []int, index int, minSize, defaultSize int, 
 		return defaultSize
 	}
 
-	remain := entireSize - (len(sizes)-1)*style.spacing
+	remain := entireSize - (len(sizes)-1)*st.Spacing
 	var denom int
 	for _, s := range sizes {
 		if s > 0 {
@@ -179,8 +179,8 @@ func (c *Context) layoutNext() (image.Rectangle, error) {
 
 	layout.itemIndex++
 	// update position
-	layout.position.X += r.Dx() + c.style().spacing
-	layout.nextRowY = max(layout.nextRowY, r.Max.Y+c.style().spacing)
+	layout.position.X += r.Dx() + c.style().Spacing
+	layout.nextRowY = max(layout.nextRowY, r.Max.Y+c.style().Spacing)
 
 	// apply body offset
 	r = r.Add(layout.body.Min)

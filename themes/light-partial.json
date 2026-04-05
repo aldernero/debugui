@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "comment": "Example partial theme: merges onto DefaultStyle. Only listed fields override defaults.",
+  "colors": {
+    "text": "#1e1e1e",
+    "windowBG": "#f5f5f8ea",
+    "titleBG": "#e4e4eb",
+    "titleText": "#141418",
+    "button": "#d2d2dc",
+    "buttonHover": "#c4c4d2",
+    "buttonFocus": "#a8b0d0",
+    "base": "#ececf2",
+    "baseHover": "#e2e2ea",
+    "baseFocus": "#d6d8e6",
+    "scrollBase": "#dcdce6",
+    "scrollThumb": "#b4b4c8"
+  }
+}

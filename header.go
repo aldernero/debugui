@@ -84,9 +84,9 @@ func (c *Context) header(label string, isTreeNode bool, opt option, id widgetID,
 		c.drawIcon(
 			icon,
 			image.Rect(bounds.Min.X, bounds.Min.Y, bounds.Min.X+bounds.Dy(), bounds.Max.Y),
-			c.style().colors[colorText],
+			c.style().widgetColor(colorText),
 		)
-		bounds.Min.X += bounds.Dy() - c.style().padding
+		bounds.Min.X += bounds.Dy() - c.style().Padding
 		c.drawWidgetText(label, bounds, colorText, 0)
 	})
 	if err != nil {
@@ -108,14 +108,14 @@ func (c *Context) treeNode(label string, opt option, id widgetID, f func()) erro
 		if err != nil {
 			return err
 		}
-		l.indent += c.style().indent
+		l.indent += c.style().Indent
 		defer func() {
 			l, err2 := c.layout()
 			if err2 != nil && err == nil {
 				err = err2
 				return
 			}
-			l.indent -= c.style().indent
+			l.indent -= c.style().Indent
 		}()
 		f()
 		return nil

@@ -41,13 +41,13 @@ func (c *Context) TextField(buf *string) EventHandler {
 }
 
 func textFieldTextX(c *Context, bounds image.Rectangle, opt option, textw int) int {
-	ofx := bounds.Dx() - c.style().padding - textw - 1
-	textx := bounds.Min.X + min(ofx, c.style().padding)
+	ofx := bounds.Dx() - c.style().Padding - textw - 1
+	textx := bounds.Min.X + min(ofx, c.style().Padding)
 	switch {
 	case opt&optionAlignCenter != 0:
 		textx = bounds.Min.X + (bounds.Dx()-textw)/2
 	case opt&optionAlignRight != 0:
-		textx = bounds.Min.X + bounds.Dx() - textw - c.style().padding
+		textx = bounds.Min.X + bounds.Dx() - textw - c.style().Padding
 	}
 	return textx
 }
@@ -207,7 +207,7 @@ func (c *Context) textFieldRaw(buf *string, id widgetID, opt option) (EventHandl
 		if c.focus == id {
 			f := c.currentContainer().textInputTextField(id, true)
 			disp := f.TextForRendering()
-			tc := c.style().colors[colorText]
+			tc := c.style().widgetColor(colorText)
 			textw := textWidth(disp)
 			textx := textFieldTextX(c, bounds, opt, textw)
 			texty := textFieldTextY(bounds)

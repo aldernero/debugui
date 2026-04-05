@@ -51,6 +51,10 @@ type Game struct {
 
 	selectedOption1, selectedOption2   int
 	dropdownOptions1, dropdownOptions2 []string
+
+	themeIndex  int
+	themeLabels []string
+	themeKeys   []string
 }
 
 func NewGame() (*Game, error) {
@@ -66,6 +70,10 @@ func NewGame() (*Game, error) {
 		bg:                [3]int{90, 95, 100},
 		checks:            [3]bool{true, false, true},
 		needResetPosition: true,
+	}
+	for _, o := range debugui.BuiltInThemeMenu() {
+		g.themeLabels = append(g.themeLabels, o.Label)
+		g.themeKeys = append(g.themeKeys, o.Key)
 	}
 
 	return g, nil

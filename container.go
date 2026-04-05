@@ -137,7 +137,7 @@ func (c *Context) doWindow(title string, initialBounds image.Rectangle, opt opti
 	// do title bar
 	if (^opt & optionNoTitle) != 0 {
 		tr := bounds
-		tr.Max.Y = tr.Min.Y + c.style().titleHeight
+		tr.Max.Y = tr.Min.Y + c.style().TitleHeight
 		if !collapsed {
 			c.drawFrame(tr, colorTitleBG)
 		} else {
@@ -147,7 +147,7 @@ func (c *Context) doWindow(title string, initialBounds image.Rectangle, opt opti
 		// do title text
 		if (^opt & optionNoTitle) != 0 {
 			titleID := id.push(idPartFromString("title"))
-			r := image.Rect(tr.Min.X+tr.Dy()-c.style().padding, tr.Min.Y, tr.Max.X, tr.Max.Y)
+			r := image.Rect(tr.Min.X+tr.Dy()-c.style().Padding, tr.Min.Y, tr.Max.X, tr.Max.Y)
 			_ = c.widgetWithBounds(titleID, opt, r, func(bounds image.Rectangle, wasFocused bool) EventHandler {
 				if titleID == c.focus && c.pointing.pressed() {
 					b := cnt.layout.Bounds.Add(c.pointingDelta())
@@ -162,7 +162,7 @@ func (c *Context) doWindow(title string, initialBounds image.Rectangle, opt opti
 					}
 					if c.screenHeight > 0 {
 						maxY := b.Min.Y + tr.Dy()
-						if maxY >= c.screenHeight/c.Scale()-c.style().padding {
+						if maxY >= c.screenHeight/c.Scale()-c.style().Padding {
 							b = b.Add(image.Pt(0, c.screenHeight/c.Scale()-maxY))
 						}
 					}
@@ -192,7 +192,7 @@ func (c *Context) doWindow(title string, initialBounds image.Rectangle, opt opti
 				if collapsed {
 					icon = iconCollapsed
 				}
-				c.drawIcon(icon, r, c.style().colors[colorTitleText])
+				c.drawIcon(icon, r, c.style().widgetColor(colorTitleText))
 			})
 		}
 	}
@@ -212,7 +212,7 @@ func (c *Context) doWindow(title string, initialBounds image.Rectangle, opt opti
 
 	// do `resize` handle
 	if (^opt & optionNoResize) != 0 {
-		sz := c.style().titleHeight
+		sz := c.style().TitleHeight
 		resizeID := id.push(idPartFromString("resize"))
 		r := image.Rect(bounds.Max.X-sz, bounds.Max.Y-sz, bounds.Max.X, bounds.Max.Y)
 		_ = c.widgetWithBounds(resizeID, 0, r, func(bounds image.Rectangle, wasFocused bool) EventHandler {
@@ -308,7 +308,7 @@ func (c *Context) pushContainerBodyLayout(cnt *container, body image.Rectangle, 
 	if (^opt & optionNoScroll) != 0 {
 		body = c.scrollbars(cnt, body)
 	}
-	if err := c.pushLayout(body.Inset(c.style().padding), cnt.layout.ScrollOffset, opt&optionAutoSize != 0); err != nil {
+	if err := c.pushLayout(body.Inset(c.style().Padding), cnt.layout.ScrollOffset, opt&optionAutoSize != 0); err != nil {
 		return err
 	}
 	cnt.layout.BodyBounds = body
